@@ -1,17 +1,17 @@
 #import "@preview/pinit:0.2.2": *
 
-#let __ndproof-justification-marker = <__ndproof_justification>
+#let __turnstile-justification-marker = <__turnstile_justification>
 
-#let __ndproof-extract-justification(body) = {
+#let __turnstile-extract-justification(body) = {
   let sequence = type([])
   if type(body) == sequence and body.has("children") {
     for it in body.children {
       if type(it) == sequence and it.has("children") {
-        let justification = __ndproof-extract-justification(it)
+        let justification = __turnstile-extract-justification(it)
         if justification != none {
           return justification
         }
-      } else if type(it) == content and it.func() == figure and it.label == __ndproof-justification-marker {
+      } else if type(it) == content and it.func() == figure and it.label == __turnstile-justification-marker {
         return it.body
       }
     }
@@ -49,14 +49,14 @@
 
 #let elimcontra(m) = $nospace(bot)"E" #m$
 
-#let by(justification) = [#figure(justification) #__ndproof-justification-marker]
+#let by(justification) = [#figure(justification) #__turnstile-justification-marker]
 
 #let justification-for-kind = ("premise": premise)
 
 /// Return a list of dictionaries `(claim: str, justification: content, depth: number, closes: number)`.
 /// `closes` is nonzero if and only if the item concludes a nested subproof, and indicates how many layers
 /// of nesting to go back up.
-#let __ndproof-process(body, depth: 0) = {
+#let __turnstile-process(body, depth: 0) = {
   let sequence = type([])
   let result = ()
   if type(body) == sequence and body.has("children") {
@@ -66,7 +66,7 @@
         let kind = it.term.text
         assert(kind in ("premise", "subproof", "have"))
         if kind == "subproof" {
-          let subproof-items = __ndproof-process(it.description, depth: depth + 1)
+          let subproof-items = __turnstile-process(it.description, depth: depth + 1)
           if subproof-items.len() > 0 {
             subproof-items.at(-1).at("closes") += 1
           }
@@ -74,7 +74,7 @@
         } else {
           let justification = justification-for-kind.at(kind, default: none)
           if justification == none {
-            justification = __ndproof-extract-justification(it.description)
+            justification = __turnstile-extract-justification(it.description)
           }
           result.push((
             claim: it.description,
@@ -89,10 +89,10 @@
   return result
 }
 
-#let __ndproof-pin-id(proof-id, pin-counter) = "__ndproof-pin/" + str(proof-id) + "/" + str(pin-counter)
+#let __turnstile-pin-id(proof-id, pin-counter) = "__turnstile-pin/" + str(proof-id) + "/" + str(pin-counter)
 
 // Return a list of subproofs `(depth:, start-pin:, end-pin:)` and a mapping of item indexes to pins to place.
-#let __ndproof-subproof-pins(proof-id, items) = {
+#let __turnstile-subproof-pins(proof-id, items) = {
   let subproofs = () // list of (depth:, start-pin:, end-pin:)
   let open-subproofs = () // stack of indexes into `subproofs`
   let pin-for-item = (:) // item ID -> pin; keys are strings because of https://github.com/typst/typst/issues/5912
@@ -102,7 +102,7 @@
   for (idx, item) in items.enumerate() {
     if item.depth > open-subproofs.len() {
       // new subproof opened
-      let pin-id = __ndproof-pin-id(proof-id, pin-counter)
+      let pin-id = __turnstile-pin-id(proof-id, pin-counter)
       while open-subproofs.len() < item.depth {
         let new-subproof-idx = subproofs.len()
         open-subproofs.push(new-subproof-idx)
@@ -113,7 +113,7 @@
     }
 
     if item.closes > 0 {
-      let pin-id = __ndproof-pin-id(proof-id, pin-counter)
+      let pin-id = __turnstile-pin-id(proof-id, pin-counter)
       while open-subproofs.len() > item.depth - item.closes {
         let subproof-idx = open-subproofs.pop()
         subproofs.at(subproof-idx).at("end-pin") = pin-id
@@ -126,7 +126,7 @@
   return (subproofs, pin-for-item)
 }
 
-#let __ndproof-counter = counter("__ndproof-counter")
+#let __turnstile-counter = counter("__turnstile-counter")
 
 #let __calc-left-indent(depth) = {
   if depth == 0 {
@@ -136,10 +136,10 @@
 }
 
 #let ndproof(body, line-stroke: .5pt) = context {
-  let items = __ndproof-process(body)
-  let proof-id = __ndproof-counter.get().at(0)
+  let items = __turnstile-process(body)
+  let proof-id = __turnstile-counter.get().at(0)
 
-  let (subproofs, pin-for-item) = __ndproof-subproof-pins(proof-id, items)
+  let (subproofs, pin-for-item) = __turnstile-subproof-pins(proof-id, items)
 
   let rows = ()
   for (idx, item) in items.enumerate() {
@@ -152,7 +152,7 @@
     )
   }
 
-  show __ndproof-justification-marker: none
+  show __turnstile-justification-marker: none
   grid(
     columns: 3,
     column-gutter: (1em, 5em),
@@ -191,5 +191,5 @@
       stroke: line-stroke,
     )
   }
-  __ndproof-counter.step()
+  __turnstile-counter.step()
 }
