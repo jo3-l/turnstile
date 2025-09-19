@@ -2,7 +2,7 @@
 
 <i>[turnstile](<https://en.wikipedia.org/wiki/Turnstile_(symbol)>): the ⊢ symbol, denoting implication</i>
 
-A Typst package for typesetting Finch-style natural deduction proofs:
+A Typst package for typesetting Fitch-style natural deduction proofs:
 
 **Example**
 
