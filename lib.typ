@@ -33,7 +33,7 @@
 #let elimor(i, jk, lm) = {
   let (j, k) = jk
   let (l, m) = lm
-  $nospace(or)"E" space #i, space #j#sym.hyph.nobreak#k, space #l#sym.hyph.nobreak#m$
+  $nospace(or)"E" space #i, #j#nospace(sym.dash.en)#k, #l#nospace(sym.dash.en)#m$
 }
 
 #let introcond(k, l) = $nospace(->)"I" space #k, #l$
@@ -42,14 +42,18 @@
 #let introbicond(k, l) = $nospace(<->)"I" space #k, #l$
 #let elimbicond(m) = $nospace(<->)"E" space #m$
 
-#let intronot(k, l) = $nospace(not)"I" space #k#sym.hyph.nobreak#l$
+#let intronot(k, l) = $nospace(not)"I" space #k#nospace(sym.dash.en)#l$
 #let elimnot(k, l) = $nospace(not)"E" space #k, #l$
 
-#let raa(k, l) = $"RAA" space #k#sym.hyph.nobreak#l$
+#let raa(k, l) = $"RAA" space #k#nospace(sym.dash.en)#l$
 
 #let elimcontra(m) = $nospace(bot)"E" #m$
 
-#let by(justification) = [#figure(justification) #__turnstile-justification-marker]
+#let by(justification) = [#figure(
+    justification,
+    kind: "__turnstile-justification",
+    supplement: none,
+  ) #__turnstile-justification-marker]
 
 #let justification-for-kind = ("premise": premise)
 
