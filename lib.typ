@@ -55,7 +55,7 @@
     supplement: none,
   ) #__turnstile-justification-marker]
 
-#let justification-for-kind = ("premise": premise)
+#let justification-for-kind = ("premise": premise, "assume": assumption)
 
 /// Return a list of dictionaries `(claim: str, justification: content, depth: number, closes: number)`.
 /// `closes` is nonzero if and only if the item concludes a nested subproof, and indicates how many layers
@@ -68,7 +68,7 @@
       if type(it) == content and it.func() == terms.item {
         assert(type(it.term.text) == str)
         let kind = it.term.text
-        assert(kind in ("premise", "subproof", "have"))
+        assert(kind in ("premise", "subproof", "have", "assume"))
         if kind == "subproof" {
           let subproof-items = __turnstile-process(it.description, depth: depth + 1)
           if subproof-items.len() > 0 {
