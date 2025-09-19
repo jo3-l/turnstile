@@ -1,6 +1,6 @@
 # Turnstile
 
-_[turnstile](<https://en.wikipedia.org/wiki/Turnstile_(symbol)>): the ⊢ symbol, denoting implication\_
+<i>[turnstile](<https://en.wikipedia.org/wiki/Turnstile_(symbol)>): the ⊢ symbol, denoting implication</i>
 
 A Typst package for typesetting Finch-style natural deduction proofs:
 
