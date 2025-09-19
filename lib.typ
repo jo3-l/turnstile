@@ -21,33 +21,33 @@
 
 #let nospace(symbol) = math.class("normal", symbol)
 
-#let assumption = $"AS"$
+#let assumption = "AS"
 #let AS = assumption
-#let premise = $"PR"$
+#let premise = "PR"
 
-#let reiterate(m) = $"R" space #m$
-#let introand(k, l) = $nospace(and)"I" space #k, #l$
-#let elimand(m) = $nospace(and)"E" space #m$
+#let reiterate(m) = [R #m]
+#let introand(k, l) = [$nospace(and)$I #k, #l]
+#let elimand(m) = [$nospace(and)$E #m]
 
-#let introor(m) = $nospace(or)"I" space #m$
+#let introor(m) = [$nospace(or)$I #m]
 #let elimor(i, jk, lm) = {
   let (j, k) = jk
   let (l, m) = lm
-  $nospace(or)"E" space #i, #j#nospace(sym.dash.en)#k, #l#nospace(sym.dash.en)#m$
+  [$nospace(or)$E #i, #{ j }--#k, #{ l }--#m]
 }
 
-#let introcond(k, l) = $nospace(->)"I" space #k, #l$
-#let elimcond(k, l) = $nospace(->)"E" space #k, #l$
+#let introcond(k, l) = [$nospace(->)$I #k, #l]
+#let elimcond(k, l) = [$nospace(->)$E #k, #l]
 
-#let introbicond(k, l) = $nospace(<->)"I" space #k, #l$
-#let elimbicond(m) = $nospace(<->)"E" space #m$
+#let introbicond(k, l) = [$nospace(<->)$I #k, #l]
+#let elimbicond(m) = [$nospace(<->)$E #m]
 
-#let intronot(k, l) = $nospace(not)"I" space #k#nospace(sym.dash.en)#l$
-#let elimnot(k, l) = $nospace(not)"E" space #k, #l$
+#let intronot(k, l) = [$nospace(not)$I #{ k }--#l]
+#let elimnot(k, l) = [$nospace(not)$E #k, #l]
 
-#let raa(k, l) = $"RAA" space #k#nospace(sym.dash.en)#l$
+#let raa(k, l) = [RAA #{ k }--#l]
 
-#let elimcontra(m) = $nospace(bot)"E" #m$
+#let elimcontra(m) = [$nospace(bot)$E #m]
 
 #let by(justification) = [#figure(
     justification,
