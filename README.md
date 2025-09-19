@@ -28,7 +28,7 @@ A Typst package for typesetting Finch-style natural deduction proofs:
 
 **Output**
 
-![Output for example code](assets/basic.svg)
+<img src="assets/basic.svg" alt="Output for example code" width="600">
 
 ## Motivation
 
