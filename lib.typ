@@ -139,7 +139,7 @@
   return .5em + (depth - 1) * 1em
 }
 
-#let ndproof(body, line-stroke: .5pt) = context {
+#let ndproof(body, line-prefix: lineno => [#lineno.], line-stroke: .5pt) = context {
   let items = __turnstile-process(body)
   let proof-id = __turnstile-counter.get().at(0)
 
@@ -150,7 +150,7 @@
     let pin-id = pin-for-item.at(str(idx), default: none)
     let indent = __calc-left-indent(item.depth)
     rows += (
-      [#{ idx + 1 }.],
+      line-prefix(idx + 1),
       box(inset: 0pt, stack(dir: ltr, if pin-id != none { pin(pin-id) }, pad(left: indent, item.claim))),
       item.justification,
     )
