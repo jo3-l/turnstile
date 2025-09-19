@@ -4,13 +4,7 @@ _[turnstile](<https://en.wikipedia.org/wiki/Turnstile_(symbol)>): the ⊢ symbol
 
 A Typst package for typesetting Finch-style natural deduction proofs:
 
-<table>
-<tr>
-<th>Example</th>
-<th>Output</th>
-</tr>
-<tr>
-<td>
+**Example**
 
 ```typ
 #ndproof[
@@ -32,12 +26,9 @@ A Typst package for typesetting Finch-style natural deduction proofs:
 ]
 ```
 
-</td>
-<td>
-<img src="assets/basic.svg" alt="Output for example code">
-</td>
-</tr>
-</table>
+**Output**
+
+![Output for example code](assets/basic.svg)
 
 ## Motivation
 
