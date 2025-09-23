@@ -157,13 +157,13 @@
   }
 
   show __turnstile-justification-marker: none
-  grid(
+  block(breakable: false, spacing: 0pt, grid(
     columns: 3,
     column-gutter: (1em, 5em),
     align: (right + horizon, left + horizon, left + horizon),
     row-gutter: .8em,
     ..rows
-  )
+  ))
 
   for (start-pin, end-pin, depth) in subproofs {
     let indent = __calc-left-indent(depth) - .5em
