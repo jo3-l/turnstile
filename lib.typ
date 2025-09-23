@@ -63,30 +63,34 @@
 #let __turnstile-process(body, depth: 0) = {
   let sequence = type([])
   let result = ()
-  if type(body) == sequence and body.has("children") {
-    for it in body.children {
-      if type(it) == content and it.func() == terms.item {
-        assert(type(it.term.text) == str)
-        let kind = it.term.text
-        assert(kind in ("premise", "subproof", "have", "assume"))
-        if kind == "subproof" {
-          let subproof-items = __turnstile-process(it.description, depth: depth + 1)
-          if subproof-items.len() > 0 {
-            subproof-items.at(-1).at("closes") += 1
-          }
-          result += subproof-items
-        } else {
-          let justification = justification-for-kind.at(kind, default: none)
-          if justification == none {
-            justification = __turnstile-extract-justification(it.description)
-          }
-          result.push((
-            claim: it.description,
-            justification: justification,
-            depth: depth,
-            closes: 0,
-          ))
+  let children = if type(body) == sequence and body.has("children") {
+    body.children
+  } else {
+    (body,)
+  }
+
+  for it in children {
+    if type(it) == content and it.func() == terms.item {
+      assert(type(it.term.text) == str)
+      let kind = it.term.text
+      assert(kind in ("premise", "subproof", "have", "assume"))
+      if kind == "subproof" {
+        let subproof-items = __turnstile-process(it.description, depth: depth + 1)
+        if subproof-items.len() > 0 {
+          subproof-items.at(-1).at("closes") += 1
         }
+        result += subproof-items
+      } else {
+        let justification = justification-for-kind.at(kind, default: none)
+        if justification == none {
+          justification = __turnstile-extract-justification(it.description)
+        }
+        result.push((
+          claim: it.description,
+          justification: justification,
+          depth: depth,
+          closes: 0,
+        ))
       }
     }
   }
@@ -104,6 +108,7 @@
   let pin-counter = 0
 
   for (idx, item) in items.enumerate() {
+    let needs-pin = false
     if item.depth > open-subproofs.len() {
       // new subproof opened
       let pin-id = __turnstile-pin-id(proof-id, pin-counter)
@@ -113,7 +118,7 @@
         subproofs.push((depth: open-subproofs.len(), start-pin: pin-id, end-pin: none)) // `end-pin` filled in later
       }
       pin-for-item.insert(str(idx), pin-id)
-      pin-counter += 1
+      needs-pin = true
     }
 
     if item.closes > 0 {
@@ -123,6 +128,10 @@
         subproofs.at(subproof-idx).at("end-pin") = pin-id
       }
       pin-for-item.insert(str(idx), pin-id)
+      needs-pin = true
+    }
+
+    if needs-pin {
       pin-counter += 1
     }
   }
@@ -166,21 +175,28 @@
   ))
 
   for (start-pin, end-pin, depth) in subproofs {
+    let protrusion = 3pt
+    let ext = if start-pin != end-pin {
+      2pt
+    } else {
+      6pt
+    }
+
     let indent = __calc-left-indent(depth) - .5em
     pinit-line(
       start-pin,
       start-pin,
-      start-dy: -2pt,
-      end-dy: -2pt,
+      start-dy: -ext,
+      end-dy: -ext,
       start-dx: indent,
-      end-dx: indent + 3pt,
+      end-dx: indent + protrusion,
       stroke: line-stroke,
     )
     pinit-line(
       start-pin,
       end-pin,
-      start-dy: -2pt,
-      end-dy: +2pt,
+      start-dy: -ext,
+      end-dy: +ext,
       start-dx: indent,
       end-dx: indent,
       stroke: .5pt,
@@ -188,10 +204,10 @@
     pinit-line(
       end-pin,
       end-pin,
-      start-dy: +2pt,
-      end-dy: +2pt,
+      start-dy: +ext,
+      end-dy: +ext,
       start-dx: indent,
-      end-dx: indent + 3pt,
+      end-dx: indent + protrusion,
       stroke: line-stroke,
     )
   }
