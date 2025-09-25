@@ -8,12 +8,12 @@
   / have: $(q or r)$ #by(elimand(1))
 
   / subproof:
-    / have: $q$ #by(AS)
+    / assume: $q$
     / have: $(p and q)$ #by(introand(2, 4))
     / have: $(((p and q) or (p and r)))$ #by(introor(5))
 
   / subproof:
-    / have: $r$ #by(AS)
+    / assume: $r$
     / have: $(p and r)$ #by(introand(2, 7))
     / have: $((p and q) or (p and r))$ #by(introor(8))
 
