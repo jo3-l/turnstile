@@ -166,7 +166,7 @@
   }
 
   show __turnstile-justification-marker: none
-  block(breakable: false, spacing: 0pt, grid(
+  block(breakable: false, grid(
     columns: 3,
     column-gutter: (1em, 5em),
     align: (right + horizon, left + horizon, left + horizon),
