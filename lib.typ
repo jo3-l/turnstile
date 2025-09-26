@@ -36,7 +36,7 @@
   [$nospace(or)$E #i, #{ j }--#k, #{ l }--#m]
 }
 
-#let introcond(k, l) = [$nospace(->)$I #k, #l]
+#let introcond(k, l) = [$nospace(->)$I #{ k }--#l]
 #let elimcond(k, l) = [$nospace(->)$E #k, #l]
 
 #let introbicond(k, l) = [$nospace(<->)$I #k, #l]
