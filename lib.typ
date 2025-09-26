@@ -33,19 +33,19 @@
 #let elimor(i, jk, lm) = {
   let (j, k) = jk
   let (l, m) = lm
-  [$nospace(or)$E #i, #{ j }--#k, #{ l }--#m]
+  [$nospace(or)$E #i, #j;--#k, #l;--#m]
 }
 
-#let introcond(k, l) = [$nospace(->)$I #{ k }--#l]
+#let introcond(k, l) = [$nospace(->)$I #k;--#l]
 #let elimcond(k, l) = [$nospace(->)$E #k, #l]
 
 #let introbicond(k, l) = [$nospace(<->)$I #k, #l]
 #let elimbicond(m) = [$nospace(<->)$E #m]
 
-#let intronot(k, l) = [$nospace(not)$I #{ k }--#l]
+#let intronot(k, l) = [$nospace(not)$I #k;--#l]
 #let elimnot(k, l) = [$nospace(not)$E #k, #l]
 
-#let raa(k, l) = [RAA #{ k }--#l]
+#let raa(k, l) = [RAA #k;--#l]
 
 #let elimcontra(m) = [$nospace(bot)$E #m]
 
